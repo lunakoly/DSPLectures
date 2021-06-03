@@ -111,6 +111,142 @@ $$
 * **Если спектр периодический, то сигнал дискретный:** Рассмотрим ограниченный спектр из $\pm\omega$, продолжим его периодически в бесконечность и разложим в ряд Фурье. Тогда коэффициенты $C_n$ можно вычислить по дискретным отсчетам времени с шагом в соответствии с $\frac{\pi}{\omega}$. Обратное тоже верно.
 * У $sinc$'а преобразование Фурье имеет вид прямоугольника
 
+### Свойства преобразования Фурье
+
+#### Линейность
+
+По определению, для некоторого векторного пространства $(V,K,+,\cdot)$, $a,b \in V$, $\gamma \in K$:
+$$
+\begin{aligned}
+    f: V \rightarrow V \text{ - линейна}
+    \Longleftrightarrow
+    \begin{cases}
+        \gamma\cdot f(a) = f(\gamma\cdot a) \\
+        f(a) + f(b) = f(a + b)
+    \end{cases}
+\end{aligned}
+$$
+Очевидно, ПФ удовлетворяет этому условию (как функция на $(\mathbb{R} \rightarrow \mathbb{R},\mathbb{C},+,\cdot)$), а следовательно:
+$$
+\begin{aligned}
+    Fourier\left(\sum_{i}\alpha_i\phi_i(t)\right)
+    &= \sum_{i}\alpha_i \cdot Fourier(\phi_i(t)) \\
+    &= \sum_{i}\alpha_i \Phi_i(\nu)
+\end{aligned}
+$$
+
+#### Смещение функции
+
+При смещении нашей подопытной функции $\phi(t)$ на $\Delta t$ результат ПФ умножается на $e^{2\pi i \nu\Delta t}$. Пусть $t' = t + \Delta t$, тогда:
+$$
+\begin{aligned}
+    Fourier\left(\phi(t + \Delta t)\right)
+    &= \int_{-\infty}^{\infty} \phi(t + \Delta t) e^{-2\pi i\nu t} dt \\
+    &= \int_{-\infty}^{\infty} \phi(t') e^{-2\pi i\nu (t' - \Delta t)} dt
+\end{aligned}
+$$
+Так как $dt' = d(t + \Delta t) = dt$, то:
+$$
+\begin{aligned}
+    \int_{-\infty}^{\infty} \phi(t') e^{-2\pi i\nu (t' - \Delta t)} dt'
+    &= e^{2\pi i\nu\Delta t} \cdot \int_{-\infty}^{\infty} \phi(t') e^{-2\pi i\nu t'} dt' \\
+    &= e^{2\pi i\nu\Delta t} \cdot F(\nu)
+\end{aligned}
+$$
+
+#### Масштабирование функции
+
+Аналогично, $t' = \alpha t$:
+$$
+\begin{aligned}
+    Fourier\left(\phi(\alpha t)\right)
+    &= \int_{-\infty}^{\infty} \phi(\alpha t) e^{-2\pi i\nu t} dt \\
+    &= \int_{-\infty}^{\infty} \phi(t') e^{-2\pi i\nu \frac{t'}{\alpha}} dt
+\end{aligned}
+$$
+Так как $dt' = \alpha dt$, то для $a > 0$:
+$$
+\begin{aligned}
+    \int_{-\infty}^{\infty} \phi(t') e^{-2\pi i\nu \frac{t'}{\alpha}} dt
+    &= \frac{1}{\alpha} \int_{-\infty}^{\infty} \phi(t') e^{-2\pi i\frac{\nu}{\alpha} t'} dt \\
+    &= \frac{1}{\alpha} \Phi\left(\frac{\nu}{\alpha}\right)
+\end{aligned}
+$$
+А вот для $a < 0$ мы получим $dt' < 0$ при $dt > 0$. Тогда надо поменять местами пределы интегрирования и выскочит минус в результате:
+$$
+\begin{aligned}
+	-\frac{1}{\alpha} \Phi\left(\frac{\nu}{\alpha}\right)
+\end{aligned}
+$$
+Тогда в одной форме это:
+$$
+\begin{aligned}
+	\frac{1}{\left|\alpha\right|} \Phi\left(\frac{\nu}{\alpha}\right)
+\end{aligned}
+$$
+Вывод: при сжатии функции по времени в $\alpha$ раз, ее ПФ расширяется по частоте в $\alpha$ раз.
+
+#### Произведение функций
+
+ПФ произведения двух функций - это свертка их ПФ.
+$$
+\begin{aligned}
+    Fourier\left(\phi(t)\xi(t)\right) 
+    &= \int_{-\infty}^{\infty} \phi(t)\xi(t) e^{-2\pi i\nu t} dt \\
+    &= \int_{-\infty}^{\infty} \left( \int_{-\infty}^{\infty} \Phi(k) e^{2\pi i kt} dk \right) \xi(t) e^{-2\pi i\nu t} dt \\
+    &= \int_{-\infty}^{\infty} \Phi(k) \left( \int_{-\infty}^{\infty} \xi(t) e^{2\pi i (k - \nu)t} dt \right) dk \\
+    &= \int_{-\infty}^{\infty} \Phi(k) \left( \int_{-\infty}^{\infty} \xi(t) e^{-2\pi i (\nu - k)t} dt \right) dk \\
+    &= \int_{-\infty}^{\infty} \Phi(k) \Xi(\nu - k) dk \\
+    &= \left(\Phi * \Xi\right)(\nu)
+\end{aligned}
+$$
+
+#### Свертка функций
+
+ПФ свертки двух функций есть произведение ПФ этих функций. Доказывается аналогично в силу \textquote{симметрии} прямого и обратного преобразований Фурье.
+
+#### Дифференцирование функции
+
+При дифференцировании $\phi(t)$ по $t$ ее ПФ умножается на $2\pi i \nu$.
+$$
+\begin{aligned}
+    Fourier\left(\frac{d\phi(t)}{dt}\right) 
+    &= \int_{-\infty}^{\infty} \frac{d\phi(t)}{dt} e^{-2\pi i\nu t} dt \\
+    &= \int_{-\infty}^{\infty} e^{-2\pi i\nu t} d\phi(t) \\
+    &= \phi(t) e^{-2\pi\nu t} \bigg|_{-\infty}^{\infty} - \int_{-\infty}^{\infty} \phi(t) d\left(e^{-2\pi i\nu t}\right) \\
+    &= \phi(t) e^{-2\pi\nu t} \bigg|_{-\infty}^{\infty} + 2\pi i\nu \int_{-\infty}^{\infty} \phi(t) e^{-2\pi i\nu t} dt \\
+    &= \phi(t) e^{-2\pi\nu t} \bigg|_{-\infty}^{\infty} + 2\pi i\nu \cdot \Phi(\nu) \\
+\end{aligned}
+$$
+Прямое и обратное преобразование Фурье существует для функций с органиченной энергией, то есть:
+$$
+\begin{aligned}
+	\int_{-\infty}^{\infty} |\phi(t)|^2 dt \neq \infty
+\end{aligned}
+$$
+И из этого следует, что первое слагаемое должно быть 0.
+
+#### Интегрирование функции
+
+Как можно предположить, тут произойдет обратное - деление на эту величину. Правда, теперь мы еще требуем, чтобы в функции не было константной составляющей (при дифференцировании она бы пропала, а вот при интегрировании - нет).
+$$
+\begin{aligned}
+    Fourier\left(\int_{-\infty}^{t} \phi(t') dt'\right) 
+    &= \int_{-\infty}^{\infty} \left( \int_{-\infty}^{t} \phi(t') dt' \right) e^{-2\pi i\nu t} dt \\
+    &= -\frac{1}{2\pi i\nu} \cdot \int_{-\infty}^{\infty} \left( \int_{-\infty}^{t} \phi(t') dt' \right) d\left(e^{-2\pi i\nu t}\right) \\
+    &= -\frac{1}{2\pi i\nu} \cdot \left[ e^{-2\pi i\nu t} \int_{-\infty}^{t} \phi(t') dt' \biggr|_{-\infty}^{\infty} - \int_{-\infty}^{\infty} e^{-2\pi i\nu t} d\left(\int_{-\infty}^{t} \phi(t') dt'\right)\right] \\
+    &= -\frac{1}{2\pi i\nu} \cdot \left[ e^{-2\pi i\nu t} \int_{-\infty}^{t} \phi(t) dt \biggr|_{-\infty}^{\infty} - \int_{-\infty}^{\infty} e^{-2\pi i\nu t} \phi(t) dt\right] \\
+    &= -\frac{1}{2\pi i\nu} \cdot \left[ 0 - \int_{-\infty}^{\infty} e^{-2\pi i\nu t} \phi(t) dt\right] \\
+    &= \frac{1}{2\pi i\nu} \cdot \int_{-\infty}^{\infty} e^{-2\pi i\nu t} \phi(t) dt \\
+    &= \frac{1}{2\pi i\nu} \cdot \Phi(\nu)
+\end{aligned}
+$$
+А 0 там появился из-за того, что $\int_{-\infty}^{\infty} \phi(t') dt' = 0$.
+
+#### Обратимость
+
+Ну и само собой то, что прямой и обратное преобразование Фурье - два брата-близнеца с точностью до знака.
+
 ## Лекция 03.03
 
 ### Основные мысли
