@@ -16,18 +16,34 @@ $$
 	b_n &= \frac{1}{\pi} \int_{-\pi}^\pi f(t)\sin(nt)dt
 \end{aligned}
 $$
+Или в более общем виде (если $r$ - полупериод):
+$$
+\begin{aligned}
+	f^$(t) &= \frac{a_0}{2} + \sum_{n=1}^\infty \left(a_n\cdot \cos\left(\frac{\pi}{r} nt\right) + b_n\cdot \sin\left(\frac{\pi}{r} nt\right)\right) \\
+	a_0 &= \frac{1}{2r} \int_{-r}^r f(t)dt \\
+	a_n &= \frac{1}{r} \int_{-r}^r f(t)\cos\left(\frac{\pi}{r} nt\right)dt \\
+	b_n &= \frac{1}{r} \int_{-r}^r f(t)\sin\left(\frac{\pi}{r} nt\right)dt
+\end{aligned}
+$$
 Комплексная форма:
 $$
 \begin{aligned}
-	f^$(t) &= \sum_{n=-\infty}^\infty C_n e^{i2\pi fnt} \\
+	f^$(t) &= \sum_{n=-\infty}^\infty C_n e^{i\frac{\pi}{r}nt} \\
 	C_n
-		&= \frac{1}{2\pi} \left\lt f(t), \phi_n(t)\right\gt \\
-		&= \frac{1}{2\pi} \int_{-\pi}^\pi f(t)e^{-i2\pi fnt}dt
+		&= \frac{1}{2r} \left\lt f(t), \phi_n(t)\right\gt \\
+		&= \frac{1}{2r} \int_{-r}^r f(t)e^{-i\frac{\pi}{r}nt}dt
 \end{aligned}
 $$
-Тут $\pi$ можно заменить на любой другой полупериод.
+На лекции мы вместо полупериода $r$ масштабировали через $2\pi f^@$, где $f^@$ - *некоторая константа*:
+$$
+\begin{aligned}
+	f^$(t) &= \sum_{n=-\infty}^\infty C_n e^{i2\pi f^@nt} \\
+	C_n &= f \int_{-\frac{1}{2f^@}}^{\frac{1}{2f^@}} f(t)e^{-i2\pi f^@nt}dt
+\end{aligned}
+$$
+причем на самой лекции она обозначена как $f$, что способно совсем полностью запутать. Чтобы все прояснить, ниже я приведу 2 одинаковых перехода из ряда Фурье к преобразованию Фурье, отличающихся только используемыми обозначениями.
 
-Минус в $e^{-2\pi fnt}$ из-за того, что тут скалярное произведение комплексных функций: $\left\lt f(t), e^{2\pi fnt}\right\gt$, а для них это умножение на комплексно-сопряженное. Более подробно, скалярное произведение комплексных функций есть:
+Минус в $e^{-i\frac{\pi}{r}nt}$ из-за того, что тут скалярное произведение комплексных функций: $\left\lt f(t), e^{i\frac{\pi}{r}nt}\right\gt$, а для них это умножение на комплексно-сопряженное. Более подробно, скалярное произведение комплексных функций есть:
 $$
 \begin{aligned}
 	\left\lt f(t), g(t)\right\gt
@@ -43,24 +59,41 @@ $$
 \end{aligned}
 $$
 
-* **Если сигнал периодический, то спектр дискретный:** Потому что это просто сумма некоторых компонент вида $C_n e^{2\pi fnt}$. Поэтому же и обратное верно.
+* **Если сигнал периодический, то спектр дискретный:** Потому что это просто сумма некоторых компонент вида $C_n e^{2\pi f^@nt}$. Поэтому же и обратное верно.
 * **Теорема Котельникова:** Любую функцию, состоящую из частот $0 < f < f_{max}$ можно непрерывно представить с любой точностью при помощи чисел, следующих друг за другом не менее, чем через $\frac{1}{2f_{max}}$ секунд. При этом, функция "восстанавливается" при помощи сложения "горок" вида $sinc$.
 
 $$
 f^$(t)=\sum_{-\infty}^\infty f(-n\Delta t) sinc(\omega_{max}(t-n\Delta t))
 $$
 
-* Если сигнал _непериодический_, то это как если бы $T\rightarrow\infty$
+* Если сигнал _непериодический_, то это как если бы период $T=2r\rightarrow\infty$
 
+Сначала с обозначениях с $r$:
 $$
 \begin{aligned}
 	f^$(t)
-		&= \lim_{T\rightarrow\infty} \left( \sum_{n=-\infty}^\infty C_n e^{i2\pi fnt} \right) \\
-		&= \lim_{T\rightarrow\infty} \left( \sum_{n=-\infty}^\infty \left[ \frac{1}{T} \int_t^{t + T} f(t) e^{-2\pi fnt} dt \right] e^{i2\pi fnt} \right) \\
-		&// \frac{1}{T}\rightarrow df \\
-		&= \int_{-\infty}^\infty \left[ \int_{-\infty}^\infty f(t) e^{-2\pi fnt} dt \right] e^{i2\pi fnt} df \\
+		&= \lim_{T\rightarrow\infty} \left( \sum_{n=-\infty}^\infty C_n e^{i\frac{\pi}{r}nt} \right) \\
+		&= \lim_{T\rightarrow\infty} \left( \sum_{n=-\infty}^\infty \left[ \frac{1}{2r} \int_{-r}^{r} f(t) e^{-i\frac{\pi}{r}nt} dt \right] e^{i\frac{\pi}{r}nt} \right) \\
+		&= \lim_{T\rightarrow\infty} \left( \sum_{n=-\infty}^\infty \left[ \frac{1}{2r} \int_{-r}^{r} f(t) e^{-i2\pi\frac{1}{2r}nt} dt \right] e^{i2\pi\frac{1}{2r}nt} \right) \\
+		&// \frac{1}{T} = \frac{1}{2r}\rightarrow df \\
+		&// \frac{1}{2r}n\rightarrow f \\
+		&= \int_{-\infty}^\infty \left[ \int_{-\infty}^\infty f(t) e^{-i2\pi ft} dt \right] e^{i2\pi ft} df \\
 \end{aligned}
 $$
+Теперь в соответствии с $f^@$:
+$$
+\begin{aligned}
+	f^$(t)
+		&= \lim_{T\rightarrow\infty} \left( \sum_{n=-\infty}^\infty C_n e^{i2\pi f^@nt} \right) \\
+		&= \lim_{T\rightarrow\infty} \left( \sum_{n=-\infty}^\infty \left[ f^@ \int_{-\frac{1}{2f^@}}^{\frac{1}{2f^@}} f(t) e^{-i2\pi f^@nt} dt \right] e^{i2\pi f^@nt} \right) \\
+		&// \frac{1}{T} = f^@\rightarrow df \\
+		&// f^@n\rightarrow f \\
+		&= \int_{-\infty}^\infty \left[ \int_{-\infty}^\infty f(t) e^{-i2\pi ft} dt \right] e^{i2\pi ft} df \\
+\end{aligned}
+$$
+Прошу обратить внимание: тут $f^@$, которая изначально была константой, сжалась до до дифференциала $df$, и новая $f$ появилась в степени _вместо_ $f^@n$.
+
+Ниже могут встречаться смешанные обозначения, где вместо $f^@$ будет написано просто $f$ - это нужно понимать по смыслу.
 
 Пусть "все хорошо", и дальше $f^\$(t) = f(t)$.
 
@@ -68,11 +101,11 @@ $$
 
 По итогу, вот это называется _прямым_ преобразованием Фурье:
 $$
-F(f) = \int_{-\infty}^\infty f(t) e^{-2\pi fnt} dt
+F(f) = \int_{-\infty}^\infty f(t) e^{-2\pi ft} dt
 $$
 А вот это - _обратным_:
 $$
-f(t) = \int_{-\infty}^\infty F(f) e^{2\pi fnt} df
+f(t) = \int_{-\infty}^\infty F(f) e^{2\pi ft} df
 $$
 
 * **Если спектр периодический, то сигнал дискретный:** Рассмотрим ограниченный спектр из $\pm\omega$, продолжим его периодически в бесконечность и разложим в ряд Фурье. Тогда коэффициенты $C_n$ можно вычислить по дискретным отсчетам времени с шагом в соответствии с $\frac{\pi}{\omega}$. Обратное тоже верно.
