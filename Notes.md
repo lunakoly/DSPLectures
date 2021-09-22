@@ -20,7 +20,7 @@ $$
 $$
 \begin{aligned}
 	f^$(t) &= \frac{a_0}{2} + \sum_{n=1}^\infty \left(a_n\cdot \cos\left(\frac{\pi}{r} nt\right) + b_n\cdot \sin\left(\frac{\pi}{r} nt\right)\right) \\
-	a_0 &= \frac{1}{2r} \int_{-r}^r f(t)dt \\
+	a_0 &= \frac{1}{r} \int_{-r}^r f(t)dt \\
 	a_n &= \frac{1}{r} \int_{-r}^r f(t)\cos\left(\frac{\pi}{r} nt\right)dt \\
 	b_n &= \frac{1}{r} \int_{-r}^r f(t)\sin\left(\frac{\pi}{r} nt\right)dt
 \end{aligned}
@@ -38,7 +38,7 @@ $$
 $$
 \begin{aligned}
 	f^$(t) &= \sum_{n=-\infty}^\infty C_n e^{i2\pi f^@nt} \\
-	C_n &= f \int_{-\frac{1}{2f^@}}^{\frac{1}{2f^@}} f(t)e^{-i2\pi f^@nt}dt
+	C_n &= f^@ \int_{-\frac{1}{2f^@}}^{\frac{1}{2f^@}} f(t)e^{-i2\pi f^@nt}dt
 \end{aligned}
 $$
 причем на самой лекции она обозначена как $f$, что способно совсем полностью запутать. Чтобы все прояснить, ниже я приведу 2 одинаковых перехода из ряда Фурье к преобразованию Фурье, отличающихся только используемыми обозначениями.
@@ -51,7 +51,7 @@ $$
 \end{aligned}
 $$
 
-И для комплексных векторов размерности $N$ это будет:
+И для комплексных векторов размерности $N$ в ортонормированном базисе это будет:
 $$
 \begin{aligned}
 	\left\lt a, b\right\gt
@@ -75,9 +75,9 @@ $$
 		&= \lim_{T\rightarrow\infty} \left( \sum_{n=-\infty}^\infty C_n e^{i\frac{\pi}{r}nt} \right) \\
 		&= \lim_{T\rightarrow\infty} \left( \sum_{n=-\infty}^\infty \left[ \frac{1}{2r} \int_{-r}^{r} f(t) e^{-i\frac{\pi}{r}nt} dt \right] e^{i\frac{\pi}{r}nt} \right) \\
 		&= \lim_{T\rightarrow\infty} \left( \sum_{n=-\infty}^\infty \left[ \frac{1}{2r} \int_{-r}^{r} f(t) e^{-i2\pi\frac{1}{2r}nt} dt \right] e^{i2\pi\frac{1}{2r}nt} \right) \\
-		&// \frac{1}{T} = \frac{1}{2r}\rightarrow df \\
-		&// \frac{1}{2r}n\rightarrow f \\
-		&= \int_{-\infty}^\infty \left[ \int_{-\infty}^\infty f(t) e^{-i2\pi ft} dt \right] e^{i2\pi ft} df \\
+		&// \frac{1}{T} = \frac{1}{2r}\rightarrow d\nu \\
+		&// \frac{1}{2r}n\rightarrow \nu \\
+		&= \int_{-\infty}^\infty \left[ \int_{-\infty}^\infty f(t) e^{-i2\pi \nu t} dt \right] e^{i2\pi \nu t} d\nu \\
 \end{aligned}
 $$
 Теперь в соответствии с $f^@$:
@@ -86,16 +86,16 @@ $$
 	f^$(t)
 		&= \lim_{T\rightarrow\infty} \left( \sum_{n=-\infty}^\infty C_n e^{i2\pi f^@nt} \right) \\
 		&= \lim_{T\rightarrow\infty} \left( \sum_{n=-\infty}^\infty \left[ f^@ \int_{-\frac{1}{2f^@}}^{\frac{1}{2f^@}} f(t) e^{-i2\pi f^@nt} dt \right] e^{i2\pi f^@nt} \right) \\
-		&// \frac{1}{T} = f^@\rightarrow df \\
-		&// f^@n\rightarrow f \\
-		&= \int_{-\infty}^\infty \left[ \int_{-\infty}^\infty f(t) e^{-i2\pi ft} dt \right] e^{i2\pi ft} df \\
+		&// \frac{1}{T} = f^@\rightarrow d\nu \\
+		&// f^@n\rightarrow \nu \\
+		&= \int_{-\infty}^\infty \left[ \int_{-\infty}^\infty f(t) e^{-i2\pi \nu t} dt \right] e^{i2\pi \nu t} d\nu \\
 \end{aligned}
 $$
-Прошу обратить внимание: тут $f^@$, которая изначально была константой, сжалась до до дифференциала $df$, и новая $f$ появилась в степени _вместо_ $f^@n$.
-
-Ниже могут встречаться смешанные обозначения, где вместо $f^@$ будет написано просто $f$ - это нужно понимать по смыслу.
+Прошу обратить внимание: тут $f^@$, которая изначально была константой, сжалась до дифференциала $d\nu$, и новая $\nu$ появилась в степени _вместо_ $f^@n$.
 
 Пусть "все хорошо", и дальше $f^\$(t) = f(t)$.
+
+Ниже могут встречаться смешанные обозначения, где вместо $\nu$ будет написано просто $f$ - это нужно понимать по смыслу (может быть, когда-нибудь наступит день привести это в порядок).
 
 Отсюда же видно, что сумма стала интегралом, поэтому спектр _непериодического_ сигнала _не дискретный_.
 
@@ -203,7 +203,7 @@ $$
 
 #### Свертка функций
 
-ПФ свертки двух функций есть произведение ПФ этих функций. Доказывается аналогично в силу \textquote{симметрии} прямого и обратного преобразований Фурье.
+ПФ свертки двух функций есть произведение ПФ этих функций. Доказывается аналогично в силу "симметрии" прямого и обратного преобразований Фурье.
 
 #### Дифференцирование функции
 
@@ -332,7 +332,7 @@ $$
 
 $$
 \begin{aligned}
-	H\{\alpha x_1[n] + \beta x_2[n]\} &= \alpha H\{x_1[n]\} \beta H\{x_2[n]\} \\
+	H\{\alpha x_1[n] + \beta x_2[n]\} &= \alpha H\{x_1[n]\} + \beta H\{x_2[n]\} \\
 	y[n] = H\{x[n]\} &\Rightarrow y[n-k] = H\{x[n-k]\}
 \end{aligned}
 $$
